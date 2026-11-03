@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation — Flutter Pizza Mart App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: #141414; --sidebar-border: #2C2C2E; --sidebar-text: #8A8A8E; --sidebar-text-hover: #FFFFFF;
+            --bg-body: #F4F6F9; --bg-card: #FFFFFF; --text-main: #1F2937; --text-muted: #6B7280; --border-color: #E5E7EB;
+            --accent: #E85D26; --accent-hover: #d14f1d; --danger: #EF4444; --success: #10B981; --info: #3B82F6;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 300px; background: var(--sidebar-bg); border-right: 1px solid var(--sidebar-border); display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; overflow-y: auto; }
+        .sidebar-brand { padding: 24px; font-size: 20px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--sidebar-border); }
+        .sidebar-brand span { color: var(--accent); }
+        .sidebar-menu { list-style: none; padding: 20px 12px; flex: 1; }
+        .sidebar-menu li { margin-bottom: 4px; }
+        .sidebar-menu li a { display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: var(--sidebar-text); text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 10px; transition: all 0.2s; cursor: pointer; }
+        .sidebar-menu li a i { width: 20px; text-align: center; font-size: 16px; color: var(--accent); transition: color 0.2s; }
+        .sidebar-menu li a:hover { color: var(--sidebar-text-hover); background: rgba(255,255,255,0.05); }
+        .sidebar-menu li a:hover i { color: #fff; }
+        .sidebar-menu li a.active { background: var(--accent); color: #fff; }
+        .sidebar-menu li a.active i { color: #fff; }
+
+        /* Main Content */
+        .main-content { flex: 1; margin-left: 300px; display: flex; flex-direction: column; min-height: 100vh; }
+        .topbar { height: 80px; background: var(--bg-card); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; position: sticky; top: 0; z-index: 90; border-bottom: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .topbar h1 { font-size: 22px; font-weight: 700; color: var(--text-main); }
+        
+        .lang-select-wrap { position: relative; display: flex; align-items: center; height: 40px; }
+        .lang-select { appearance: none; width: 90px; height: 40px; padding: 0 30px 0 14px; border: 1px solid var(--border-color); background-color: #fff; border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--text-main); cursor: pointer; font-family: 'Inter'; outline: none; }
+        .lang-select:focus { border-color: var(--accent); }
+        .lang-select-wrap::after { content: '\f107'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-muted); font-size: 14px; }
+
+        .content-area { padding: 40px; flex: 1; max-width: 1100px; }
+        .doc-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .doc-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Typography & Components */
+        h2 { font-size: 32px; font-weight: 800; color: var(--text-main); margin-bottom: 24px; border-bottom: 2px solid var(--accent); padding-bottom: 10px; display: inline-block; }
+        h3 { font-size: 22px; font-weight: 700; color: var(--text-main); margin: 32px 0 16px 0; display: flex; align-items: center; gap: 10px; }
+        h3 i { color: var(--accent); }
+        h4 { font-size: 18px; font-weight: 600; color: var(--text-main); margin: 20px 0 10px 0; }
+        p { font-size: 16px; line-height: 1.7; color: var(--text-muted); margin-bottom: 16px; }
+        ul, ol { margin-bottom: 20px; padding-left: 24px; color: var(--text-muted); font-size: 16px; line-height: 1.7; }
+        li { margin-bottom: 8px; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        
+        .card { background: var(--bg-card); padding: 32px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.02); margin-bottom: 24px; }
+        
+        .code-block { background: #1F2937; color: #F3F4F6; padding: 16px; border-radius: 10px; font-family: monospace; font-size: 14px; overflow-x: auto; margin-bottom: 20px; position: relative; white-space: pre-wrap; }
+        
+        .alert { padding: 16px; border-radius: 10px; margin-bottom: 24px; font-size: 15px; display: flex; gap: 12px; align-items: flex-start; }
+        .alert i { font-size: 20px; margin-top: 2px; }
+        .alert-warning { background: rgba(232, 93, 38, 0.1); border: 1px solid rgba(232, 93, 38, 0.2); color: var(--accent-hover); }
+        .alert-info { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--info); }
+        .alert-success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--success); }
+
+        /* Media Placeholders */
+        .media-placeholder { border: 2px dashed #CBD5E1; background: #F8FAFC; border-radius: 12px; padding: 40px 20px; text-align: center; margin: 20px 0; color: #64748B; transition: 0.2s; }
+        .media-placeholder i { font-size: 32px; color: #94A3B8; margin-bottom: 10px; display: block; }
+        .media-placeholder span { display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 4px; }
+        .media-placeholder small { display: block; font-size: 12px; color: #64748B; }
+
+        /* File Tree */
+        .file-tree { background: #F8FAFC; border: 1px solid var(--border-color); padding: 20px; border-radius: 10px; font-family: monospace; font-size: 14px; color: var(--text-main); line-height: 1.6; white-space: pre-wrap; overflow-x: auto; }
+        .file-tree .folder { color: var(--accent); font-weight: bold; }
+        .file-tree .file { color: var(--text-main); }
+
+        .contact-card { background: linear-gradient(135deg, var(--bg-card), #FFF); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; align-items: center; gap: 20px; margin-top: 20px; }
+        .contact-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; }
+        .contact-info p { margin: 0; font-size: 15px; font-weight: 500; color: var(--text-main); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">🍕 Pizza Mart Docs</div>
+        <ul class="sidebar-menu">
+            <li><a class="nav-link active" onclick="showSection('intro', this)"><i class="fa-solid fa-circle-info"></i> <span data-lang="nav_intro">О проекте</span></a></li>
+            <li><a class="nav-link" onclick="showSection('files', this)"><i class="fa-solid fa-folder-tree"></i> <span data-lang="nav_files">Структура файлов</span></a></li>
+            <li><a class="nav-link" onclick="showSection('requirements', this)"><i class="fa-solid fa-server"></i> <span data-lang="nav_req">Требования</span></a></li>
+            <li><a class="nav-link" onclick="showSection('server', this)"><i class="fa-solid fa-cloud-arrow-up"></i> <span data-lang="nav_server">Установка сервера</span></a></li>
+            <li><a class="nav-link" onclick="showSection('admin_config', this)"><i class="fa-solid fa-gears"></i> <span data-lang="nav_admin_config">Настройка админки</span></a></li>
+            <li><a class="nav-link" onclick="showSection('flutter', this)"><i class="fa-solid fa-mobile-screen"></i> <span data-lang="nav_flutter">Настройка приложения</span></a></li>
+            <li><a class="nav-link" onclick="showSection('firebase', this)"><i class="fa-brands fa-google"></i> <span data-lang="nav_firebase">Настройка Firebase</span></a></li>
+            <li><a class="nav-link" onclick="showSection('build', this)"><i class="fa-solid fa-box-open"></i> <span data-lang="nav_build">Сборка и релиз</span></a></li>
+            <li><a class="nav-link" onclick="showSection('troubleshooting', this)"><i class="fa-solid fa-wrench"></i> <span data-lang="nav_trouble">Решение проблем</span></a></li>
+            <li><a class="nav-link" onclick="showSection('support', this)"><i class="fa-solid fa-headset"></i> <span data-lang="nav_support">Поддержка</span></a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <h1 data-lang="page_title">Документация</h1>
+            <div class="lang-select-wrap">
+                <select class="lang-select" onchange="changeLanguage(this.value)">
+                    <option value="ru">RU</option>
+                    <option value="az">AZ</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="content-area">
+
+            <!-- 1. INTRODUCTION -->
+            <div id="intro" class="doc-section active">
+                <h2 data-lang="intro_title">О проекте</h2>
+                <div class="card">
+                    <h3><i class="fa-solid fa-code"></i> Flutter Pizza Mart App</h3>
+                    <p data-lang="intro_desc1">Добро пожаловать в Flutter Pizza Mart App — премиальное решение для автоматизации ресторанного бизнеса. Проект состоит из мобильного приложения (Flutter) и панели администратора (PHP).</p>
+                    <p data-lang="intro_desc2">Этот продукт идеально подходит для пиццерий, ресторанов и кафе. Вы получаете красивый интерфейс для клиентов и мощную систему управления контентом без необходимости писать код.</p>
+                    <p data-lang="intro_desc3">Приложение оснащено интуитивно понятной системой бронирования столиков. Как только клиент оставляет заявку, она мгновенно сохраняется в базе данных (Админке), а также отправляется в Telegram или WhatsApp владельца заведения для быстрой обработки.</p>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+    <img src="img/screen1.jpg" alt="App Screenshot" style="max-width: 100%; height: auto; border: none; box-shadow: none; display: block; margin: 0 auto;">
+</div>
+
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: 20px; border-radius: 12px;">
+    <iframe src="https://www.youtube.com/embed/O2NLbibi1Vo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+</div>
+                    <div class="media-placeholder">
+                        <i class="fa-solid fa-desktop"></i>
+                        <span data-lang="ph_video_admin_title">Видеопрезентация админ-панели</span>
+                        <small data-lang="ph_video_admin_desc">Вставьте HTML-тег &lt;video&gt; или &lt;iframe&gt; (YouTube). Видео должно показывать, как управлять сайтом из админки.</small>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-star"></i> <span data-lang="features_title">Возможности проекта</span></h3>
+                    <ul>
+                        <li data-lang="feat_1"><b>Мультиязычность:</b> Встроенная поддержка AZ, RU, EN. Возможность добавлять новые языки и переводить интерфейс прямо из админки.</li>
+                        <li data-lang="feat_2"><b>Темная и светлая темы:</b> Пользователь может переключать дизайн приложения в разделе «Контакты» в один клик.</li>
+                        <li data-lang="feat_3"><b>Бронирование столов:</b> Удобная форма выбора даты и гостей. Заявки падают в Админку, Telegram-бота и WhatsApp.</li>
+                        <li data-lang="feat_4"><b>Push-уведомления:</b> Отправка акций и новостей прямо на телефоны пользователей (с поддержкой картинок) из админки.</li>
+                        <li data-lang="feat_5"><b>Динамическое меню:</b> Категории и блюда с фото, весом, ценой и описанием. Раздел «Все» с новинками.</li>
+                        <li data-lang="feat_6"><b>Новости и Галерея:</b> Красивые карусели на главной странице для демонстрации интерьера и событий ресторана.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-user-tie"></i> <span data-lang="author_title">Автор проекта</span></h3>
+                    <div class="contact-card">
+                        <div class="contact-avatar">DL</div>
+                        <div class="contact-info">
+                            <p style="font-size: 18px;">Danial Larin</p>
+                            <p><i class="fa-solid fa-envelope" style="color: var(--text-muted);"></i> <a href="mailto:camlife73@gmail.com">camlife73@gmail.com</a></p>
+                            <p><i class="fa-brands fa-github" style="color: var(--text-muted);"></i> <a href="https://github.com/danlarov" target="_blank">github.com/danlarov</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. FILE STRUCTURE -->
+            <div id="files" class="doc-section">
+                <h2 data-lang="files_title">Структура файлов</h2>
+                <div class="card">
+                    <p data-lang="files_desc">Ознакомьтесь со схемой файлов, чтобы понимать, где и что находится.</p>
+                    
+                    <h4 data-lang="file_tree_title_1">1. Серверная часть (все файлы лежат в корне домена)</h4>
+                    <div class="file-tree" data-lang="file_tree_server">
+<span class="folder">📁 api/</span>
+│   ├── 📄 get_config.php         # API: Отдает настройки и переводы
+│   ├── 📄 get_menu.php           # API: Отдает категории и блюда
+│   ├── 📄 get_news.php           # API: Отдает новости
+│   ├── 📄 get_gallery.php        # API: Отдает фото галереи
+│   └── 📄 create_booking.php     # API: Принимает заявки на бронь
+│
+<span class="folder">📁 uploads/</span>                  # Папка для ВСЕХ загруженных картинок (меню, новости, пуши)
+│
+<span class="folder">📁 language/</span>                 # Языковые файлы для САМОЙ АДМИНКИ
+│   ├── 📄 ru.php                 # Русский
+│   ├── 📄 az.php                 # Азербайджанский
+│   └── 📄 en.php                 # Английский
+│
+├── 📄 index.php                  # Страница входа в админку
+├── 📄 dashboard.php              # Главная страница (последние 25 броней и статистика)
+├── 📄 bookings.php               # Полный список всех броней
+├── 📄 categories.php             # Управление категориями меню
+├── 📄 dishes.php                 # Управление блюдами (меню)
+├── 📄 news.php                   # Управление новостями
+├── 📄 gallery.php                # Управление галереей
+├── 📄 notifications.php          # Отправка Push-уведомлений
+├── 📄 settings.php               # Настройки (контакты, Telegram, WhatsApp)
+├── 📄 languages.php              # Управление языками ПРИЛОЖЕНИЯ
+├── 📄 translations.php           # Переводы интерфейса ПРИЛОЖЕНИЯ
+├── 📄 header.php                 # Шапка и навигация админки
+├── 📄 footer.php                 # Подвал админки
+├── 📄 db.php                     # Подключение к базе данных
+├── 📄 config.php                 # ГЛАВНЫЙ КОНФИГ (БД, домен)
+├── 📄 firebase-key.json          # Ключ для Push (вы создаете сами)
+└── 📄 *.sql                      # Дамп базы данных</div>
+
+                    <h4 style="margin-top: 30px;" data-lang="file_tree_title_2">2. Мобильное приложение (Flutter)</h4>
+                    <div class="file-tree" data-lang="file_tree_flutter">
+<span class="folder">📁 lib/</span>
+│   ├── <span class="folder">📁 config/</span>
+│   │   └── 📄 app_config.dart    # ГЛАВНЫЙ КОНФИГ ПРИЛОЖЕНИЯ (API, баннер)
+│   │
+│   ├── <span class="folder">📁 screens/</span>
+│   │   ├── 📄 home_screen.dart   # Главная страница
+│   │   ├── 📄 menu_screen.dart   # Меню
+│   │   ├── 📄 booking_screen.dart# Бронирование
+│   │   ├── 📄 news_screen.dart   # Новости
+│   │   ├── 📄 gallery_screen.dart# Галерея
+│   │   ├── 📄 contacts_screen.dart# Контакты и смена темы
+│   │   └── 📄 onboarding_screen.dart# Приветственные экраны
+│   │
+│   ├── <span class="folder">📁 services/</span>
+│   │   ├── 📄 app_service.dart   # Логика (Provider), загрузка API
+│   │   └── 📄 firebase_service.dart # Настройка Push-уведомлений
+│   │
+│   ├── <span class="folder">📁 widgets/</span>
+│   │   └── 📄 language_selector.dart # Кнопка выбора языка
+│   │
+│   └── 📄 main.dart              # Точка входа в приложение
+│
+<span class="folder">📁 assets/</span>
+│   ├── <span class="folder">📁 icon/</span>                  # Иконки приложения (icon.png)
+│   └── <span class="folder">📁 intro/</span>                 # Картинки для онбординга (intro1,2,3.jpg)
+│
+<span class="folder">📁 android/</span>                 # Настройки Android (build.gradle, key.properties, mipmap)</div>
+                </div>
+            </div>
+
+            <!-- 3. REQUIREMENTS -->
+            <div id="requirements" class="doc-section">
+                <h2 data-lang="req_title">Технические требования</h2>
+                <div class="alert alert-info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div data-lang="req_alert">Убедитесь, что ваш хостинг и компьютер соответствуют этим требованиям перед началом установки.</div>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-server"></i> <span data-lang="req_server">Для сервера (Хостинг)</span></h3>
+                    <ul>
+                        <li><b>PHP:</b> version 7.4 or higher (8.1+ recommended).</li>
+                        <li><b>MySQL / MariaDB:</b> version 5.7+.</li>
+                        <li><b>PHP Extensions:</b> PDO, cURL (for Push), OpenSSL, mbstring.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-brands fa-flutter"></i> <span data-lang="req_flutter">Для сборки приложения</span></h3>
+                    <ul>
+                        <li><b>Flutter SDK:</b> version 3.0 or higher.</li>
+                        <li><b>IDE:</b> Android Studio.</li>
+                        <li><b>Firebase:</b> Free Firebase account.</li>
+                        <li><b>For iOS:</b> Mac (required), Xcode, Apple Developer account.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 4. SERVER SETUP -->
+            <div id="server" class="doc-section">
+                <h2 data-lang="server_title">Установка сервера и БД</h2>
+                
+                <h3><i class="fa-solid fa-1"></i> <span data-lang="srv_step1">Загрузка файлов на хостинг</span></h3>
+                <p data-lang="srv_step1_desc">Подключитесь к вашему хостингу через FTP (например, FileZilla) или файловый менеджер хостинга (cPanel). Загрузите все файлы проекта в корневую папку вашего домена (например, <code>public_html</code> или создайте папку <code>pizzamart</code>).</p>
+                
+                <h3><i class="fa-solid fa-2"></i> <span data-lang="srv_step2">Создание базы данных</span></h3>
+                <p data-lang="srv_step2_desc">Зайдите в панель управления хостингом (cPanel/ISPmanager) и найдите раздел «Базы данных MySQL». Создайте новую базу данных, а также нового пользователя. Обязательно запишите: Имя БД, Имя пользователя и Пароль.</p>
+
+                <h3><i class="fa-solid fa-3"></i> <span data-lang="srv_step3">Импорт SQL файла</span></h3>
+                <p data-lang="srv_step3_desc">Откройте <b>phpMyAdmin</b> для созданной базы данных. Перейдите на вкладку «Импорт» (Import). Выберите SQL-файл из архива с проектом (обычно он называется <code>u3266738_pizzamart.sql</code>) и нажмите «Вперед» (Go). Таблицы создадутся автоматически.</p>
+
+                <h3><i class="fa-solid fa-4"></i> <span data-lang="srv_step4">Настройка config.php</span></h3>
+                <p data-lang="srv_step4_desc">В корне сайта найдите файл <code>config.php</code>. Откройте его через текстовый редактор и впишите данные от вашей базы данных и домен (без слэша на конце!):</p>
+                <div class="code-block">define('DB_HOST', 'localhost');
+define('DB_NAME', 'your_database_name');
+define('DB_USER', 'your_database_user');
+define('DB_PASS', 'your_database_password');
+define('BASE_URL', 'https://your-domain.com/folder');</div>
+            </div>
+
+            <!-- 5. ADMIN CONFIG -->
+            <div id="admin_config" class="doc-section">
+                <h2 data-lang="adm_cfg_title">Настройка Админки</h2>
+
+                <h3><i class="fa-solid fa-right-to-bracket"></i> <span data-lang="adm_login">Первый вход</span></h3>
+                <p data-lang="adm_login_desc">Откройте в браузере: <code>https://your-domain.com/index.php</code>.<br>
+                <b>Login:</b> admin<br>
+                <b>Password:</b> 12345678</p>
+                <div class="alert alert-warning">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div data-lang="adm_login_warn">Сразу после входа нажмите кнопку «Профиль» (в правом верхнем углу) и смените пароль на надежный!</div>
+                </div>
+
+                <h3><i class="fa-brands fa-telegram"></i> <span data-lang="adm_tg">Настройка Telegram (для получения броней)</span></h3>
+                <p data-lang="adm_tg_desc">Чтобы бронирования приходили вам в Telegram, выполните 3 шага:</p>
+                <ol>
+                    <li data-lang="adm_tg_1">Откройте Telegram, найдите бота <b>@BotFather</b>. Напишите ему <code>/newbot</code>. Придумайте имя. Он выдаст вам <b>Token</b> (длинная строка с буквами и цифрами).</li>
+                    <li data-lang="adm_tg_2">Найдите бота <b>@userinfobot</b> и напишите ему <code>/start</code>. Он покажет ваш <b>Chat ID</b> (число, например 123456789).</li>
+                    <li data-lang="adm_tg_3">Зайдите в админку -> <b>Настройки</b>. Выберите «Каналы получения заказов» -> «Только Telegram». Вставьте Token и Chat ID в поля. Сохраните.</li>
+                </ol>
+
+                <h3><i class="fa-brands fa-whatsapp"></i> <span data-lang="adm_wa">Настройка WhatsApp</span></h3>
+                <p data-lang="adm_wa_desc">В админке -> <b>Настройки</b> -> «Каналы получения заказов» выберите «Только WhatsApp». В поле «Номер WhatsApp» впишите ваш номер в международном формате <b>без плюса</b> (например: 994501234567). При бронировании клиент нажмет «Отправить» и его перекинет в WhatsApp с готовым текстом.</p>
+
+                <h3><i class="fa-solid fa-calendar-days"></i> <span data-lang="adm_bookings">Управление бронями</span></h3>
+                <p data-lang="adm_bookings_desc">В разделе <b>«Все брони»</b> вы можете видеть полный список заявок. Кнопка с галочкой подтверждает бронь (статус меняется на «Обработана»), кнопка со стрелкой возвращает в «Новые», а корзина удаляет запись. На главной странице (Дашборд) отображаются только 25 последних заявок для быстрого доступа.</p>
+
+                <h3><i class="fa-solid fa-language"></i> <span data-lang="adm_lang">Как добавить новый язык в приложение</span></h3>
+                <p data-lang="adm_lang_desc">Зайдите в раздел <b>Языки</b>. Нажмите «Добавить язык», укажите код (например, <code>tr</code> для турецкого) и название (Türkçe). После этого в разделе <b>Переводы UI</b> вы сможете перевести все тексты приложения (кнопки, меню, ошибки) на этот язык.</p>
+            </div>
+
+            <!-- 6. FLUTTER SETUP -->
+            <div id="flutter" class="doc-section">
+                <h2 data-lang="fl_title">Настройка приложения (Flutter)</h2>
+
+                <h3><i class="fa-solid fa-1"></i> <span data-lang="fl_step1">Открытие проекта</span></h3>
+                <p data-lang="fl_step1_desc">Запустите <b>Android Studio</b>. В стартовом окне нажмите <b>Open</b> (Открыть). Выберите папку <code>App</code> из архива с проектом. Дождитесь окончания загрузки и индексации файлов (внизу будет бежать полоска).</p>
+
+                <h3><i class="fa-solid fa-2"></i> <span data-lang="fl_step2">Настройка конфигурации (API)</span></h3>
+                <p data-lang="fl_step2_desc">В левом меню проекта откройте файл <code>lib/config/app_config.dart</code>. Измените ссылки на ваш домен:</p>
+                <div class="code-block">static const String apiBaseUrl = 'https://your-domain.com/folder/api';
+static const String heroBannerUrl = 'https://your-domain.com/folder/intro2.jpg';</div>
+
+                <h3><i class="fa-solid fa-3"></i> <span data-lang="fl_step3">Смена ID проекта (Application ID)</span></h3>
+                <p data-lang="fl_step3_desc">По умолчанию проект имеет ID <code>com.example.pizzamart_app</code>. Вы <b>должны</b> поменять его на свой (например, <code>com.myrestaurant.app</code>). Вот подробная инструкция:</p>
+                <ol>
+                    <li data-lang="fl_step3_1">Откройте файл <code>android/app/build.gradle.kts</code>.</li>
+                    <li data-lang="fl_step3_2">Найдите строки <code>namespace = "..."</code> и <code>applicationId = "..."</code>. Поменяйте значения на свои (например, <code>com.myrestaurant.app</code>).</li>
+                    <li data-lang="fl_step3_3">В левом меню перейдите в <code>android/app/src/main/kotlin/com/</code>.</li>
+                    <li data-lang="fl_step3_4">Нажмите правой кнопкой мыши на папку <code>example</code>, выберите <b>Refactor -> Rename</b> и переименуйте её в <code>myrestaurant</code>.</li>
+                    <li data-lang="fl_step3_5">Затем зайдите в папку <code>myrestaurant</code>. Нажмите правой кнопкой на папку <code>pizzamart_app</code>, выберите <b>Refactor -> Rename</b> и переименуйте в <code>app</code>.</li>
+                    <li data-lang="fl_step3_6">В верхнем меню Android Studio нажмите <b>Edit -> Find -> Replace in Files</b> (или нажмите <code>Ctrl+Shift+R</code>).</li>
+                    <li data-lang="fl_step3_7">В верхнее поле введите старый ID: <code>com.example.pizzamart_app</code>, а в нижнее — новый: <code>com.myrestaurant.app</code>. Нажмите <b>Replace All</b>.</li>
+                    <li data-lang="fl_step3_8">В терминале выполните <code>flutter clean</code> и <code>flutter pub get</code>, чтобы Android Studio обновила проект.</li>
+                </ol>
+
+                <h3><i class="fa-solid fa-4"></i> <span data-lang="fl_step4">Настройка иконки приложения</span></h3>
+                <p data-lang="fl_step4_desc">У вас есть два способа поменять иконку.</p>
+                <p><b data-lang="fl_step4_1">Способ 1 (Автоматический, рекомендуемый):</b> <span data-lang="fl_step4_1_desc">В файле <code>pubspec.yaml</code> есть пакет <code>flutter_launcher_icons</code>. Просто замените картинку <code>assets/icon/icon.png</code> на свою (квадратную, 1024x1024px), а затем в терминале выполните команду: <code>flutter pub run flutter_launcher_icons</code>. Пакет сам создаст иконки для всех папок.</span></p>
+                <p><b data-lang="fl_step4_2">Способ 2 (Ручной):</b> <span data-lang="fl_step4_2_desc">Если вы хотите сделать вручную, вам нужно заменить файлы <code>ic_launcher.png</code> в следующих папках (Android):</span></p>
+                <ul>
+                    <li><code>android/app/src/main/res/mipmap-hdpi/</code> (size 72x72)</li>
+                    <li><code>android/app/src/main/res/mipmap-mdpi/</code> (size 48x48)</li>
+                    <li><code>android/app/src/main/res/mipmap-xhdpi/</code> (size 96x96)</li>
+                    <li><code>android/app/src/main/res/mipmap-xxhdpi/</code> (size 144x144)</li>
+                    <li><code>android/app/src/main/res/mipmap-xxxhdpi/</code> (size 192x192)</li>
+                </ul>
+                <p data-lang="fl_step4_ios">Для iOS вам нужно заменить иконки в папке <code>ios/Runner/Assets.xcassets/AppIcon.appiconset/</code> (там лежат файлы от 20x20 до 1024x1024).</p>
+
+                <h3><i class="fa-solid fa-5"></i> <span data-lang="fl_step5">Онбординг (Интро)</span></h3>
+                <p data-lang="fl_step5_desc">Картинки для приветственных экранов лежат в папке <code>assets/intro/</code>. Замените файлы <code>intro1.jpg</code>, <code>intro2.jpg</code>, <code>intro3.jpg</code> на свои (в том же формате и с теми же именами). Тексты для онбординга меняются в админке в разделе «Переводы UI» (ключи <code>onb_title_1</code> и т.д.).</p>
+
+                <h3><i class="fa-solid fa-6"></i> <span data-lang="fl_step6">Язык по умолчанию</span></h3>
+                <p data-lang="fl_step6_desc">Язык, который открывается при первом запуске, берется из админки. Зайдите в админку -> <b>Языки</b>, и нажмите кнопку <b>«Сделать по умолчанию»</b> напротив нужного языка. Приложение при первом запуске автоматически его подхватит и сохранит в память телефона.</p>
+            </div>
+
+            <!-- 7. FIREBASE -->
+            <div id="firebase" class="doc-section">
+                <h2 data-lang="fb_title">Настройка Firebase (Push-уведомления)</h2>
+                
+                <div class="alert alert-info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div data-lang="fb_alert">Firebase нужен для отправки Push-уведомлений из админки на телефоны пользователей.</div>
+                </div>
+
+                <h3><i class="fa-solid fa-1"></i> <span data-lang="fb_step1">Создание проекта</span></h3>
+                <ol>
+                    <li data-lang="fb_1_1">Зайдите на <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> под своим Google-аккаунтом.</li>
+                    <li data-lang="fb_1_2">Нажмите «Создать проект» (Add project). Введите название (например, Pizza Mart).</li>
+                    <li data-lang="fb_1_3">Отключите Google Analytics (он вам не нужен для пушей) и нажмите «Создать проект».</li>
+                </ol>
+
+                <h3><i class="fa-brands fa-android"></i> <span data-lang="fb_step2">Добавление Android-приложения</span></h3>
+                <ol>
+                    <li data-lang="fb_2_1">На главной странице проекта нажмите иконку <b>Android</b>.</li>
+                    <li data-lang="fb_2_2"><b>Внимание:</b> В поле «Android package name» введите <b>ваш новый ID</b>, который вы сделали в предыдущем шаге (например, <code>com.myrestaurant.app</code>). Он должен совпадать символ в символ!</li>
+                    <li data-lang="fb_2_3">Придумайте nickname (например, Pizza Mart App).</li>
+                    <li data-lang="fb_2_4">Скачайте файл <b>google-services.json</b> и поместите его в папку <code>android/app/</code> вашего Flutter проекта (замените старый, если он есть).</li>
+                </ol>
+
+                <h3><i class="fa-solid fa-key"></i> <span data-lang="fb_step3">Ключ для Админки (firebase-key.json)</span></h3>
+                <p data-lang="fb_3_desc">Чтобы админка могла отправлять пуши, ей нужен ключ доступа.</p>
+                <ol>
+                    <li data-lang="fb_3_1">В Firebase нажмите на шестеренку (вверху слева) -> «Настройки проекта» (Project settings).</li>
+                    <li data-lang="fb_3_2">Перейдите на вкладку <b>«Сервисные аккаунты»</b> (Service accounts).</li>
+                    <li data-lang="fb_3_3">Нажмите кнопку <b>«Создать новый закрытый ключ»</b> (Generate new private key). Скачается JSON-файл.</li>
+                    <li data-lang="fb_3_4">Переименуйте этот файл в <b>firebase-key.json</b> и загрузите его на ваш сервер (через FTP) в корень сайта (рядом с файлом <code>notifications.php</code>).</li>
+                </ol>
+            </div>
+
+            <!-- 8. BUILD & RELEASE -->
+            <div id="build" class="doc-section">
+                <h2 data-lang="build_title">Сборка и релиз (Android & iOS)</h2>
+
+                <h3><i class="fa-brands fa-android"></i> <span data-lang="build_android">Сборка APK для Android</span></h3>
+                <p data-lang="build_android_desc">Чтобы приложение можно было установить на телефон или опубликовать в Google Play, его нужно подписать цифровым ключом (JKS).</p>
+                
+                <h4>Step 1: Create JKS Key</h4>
+                <p data-lang="build_jks_desc">Откройте терминал в Android Studio (внизу окна) и выполните команду:</p>
+                <div class="code-block">keytool -genkey -v -keystore upload-keystore.jks -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload</div>
+                <p data-lang="build_jks_desc2">Придумайте пароль и запишите его! На вопросы про имя и город можете отвечать что угодно. Файл <code>upload-keystore.jks</code> появится в корне проекта.</p>
+
+                <h4>Step 2: Create key.properties</h4>
+                <p data-lang="build_kp_desc">В папке <code>android/</code> создайте файл <code>key.properties</code> и впишите туда:</p>
+                <div class="code-block">storePassword=your_password
+keyPassword=your_password
+keyAlias=upload
+storeFile=/path/to/your/upload-keystore.jks</div>
+
+                <h4>Step 3: Compile</h4>
+                <p data-lang="build_compile_desc">В терминале выполните:</p>
+                <div class="code-block">flutter clean
+flutter build apk --release</div>
+                <p data-lang="build_compile_desc2">Готовый файл появится по пути: <code>build/app/outputs/flutter-apk/app-release.apk</code>.</p>
+
+                <h3><i class="fa-brands fa-apple"></i> <span data-lang="build_ios">Сборка для iOS (iPhone)</span></h3>
+                <div class="alert alert-warning">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div data-lang="build_ios_warn">Для сборки на iOS вам обязательно нужен компьютер <b>Mac</b> и установленный Xcode. На Windows собрать iOS-приложение невозможно.</div>
+                </div>
+                <ol>
+                    <li data-lang="build_ios_1">Откройте папку <code>ios/</code> и запустите файл <code>Runner.xcworkspace</code> в Xcode.</li>
+                    <li data-lang="build_ios_2">Выберите ваш iPhone в списке устройств (вверху). Зайдите в настройки проекта (Runner -> Signing & Capabilities), выберите вашу команду разработчика (Team).</li>
+                    <li data-lang="build_ios_3">Добавьте возможности (Capabilities): <b>Push Notifications</b> и <b>Background Modes</b> (отметьте Remote notifications).</li>
+                    <li data-lang="build_ios_4">Для сборки в терминале (на Mac) выполните: <code>flutter build ios</code> или соберите через Xcode (Product -> Archive).</li>
+                </ol>
+            </div>
+
+            <!-- 9. TROUBLESHOOTING -->
+            <div id="troubleshooting" class="doc-section">
+                <h2 data-lang="tr_title">Решение частых проблем</h2>
+                
+                <div class="card">
+                    <h3><i class="fa-solid fa-image"></i> <span data-lang="tr_1">Не загружаются картинки в приложении</span></h3>
+                    <p data-lang="tr_1_desc"><b>Причина:</b> Неправильный путь в API или отсутствие прав на папку.</p>
+                    <p data-lang="tr_1_fix"><b>Решение:</b> Проверьте, что в <code>config.php</code> константа <code>BASE_URL</code> указана без слэша на конце. Проверьте, что у папки <code>uploads/</code> на сервере стоят права <b>755</b>.</p>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-bell-slash"></i> <span data-lang="tr_2">Не приходят Push-уведомления</span></h3>
+                    <p data-lang="tr_2_desc"><b>Причина:</b> Ошибка в ключе Firebase или эмулятор не поддерживает пуши.</p>
+                    <p data-lang="tr_2_fix"><b>Решение:</b> Убедитесь, что файл <code>firebase-key.json</code> лежит на сервере. Проверьте, что ID проекта в Firebase и в <code>build.gradle.kts</code> совпадают. Если тестируете на эмуляторе — используйте образ с "Google Play Services".</p>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-database"></i> <span data-lang="tr_3">Ошибка 500 при открытии админки</span></h3>
+                    <p data-lang="tr_3_desc"><b>Причина:</b> Неверные данные от базы данных в <code>config.php</code>.</p>
+                    <p data-lang="tr_3_fix"><b>Решение:</b> Перепроверьте логин, пароль и имя базы данных. Убедитесь, что пользователь БД имеет все права (ALL PRIVILEGES).</p>
+                </div>
+            </div>
+
+            <!-- 10. SUPPORT -->
+            <div id="support" class="doc-section">
+                <h2 data-lang="support_title">Техническая поддержка</h2>
+                <div class="card">
+                    <p data-lang="support_desc">Если у вас возникли вопросы, трудности с установкой или вы нашли ошибку в коде, пожалуйста, свяжитесь с автором проекта. При обращении обязательно прикрепляйте скриншоты ошибок и описание проблемы.</p>
+                    <div class="contact-card">
+                        <div class="contact-avatar">DL</div>
+                        <div class="contact-info">
+                            <p style="font-size: 18px;">Danial Larin</p>
+                            <p><i class="fa-solid fa-envelope" style="color: var(--text-muted);"></i> Email: <a href="mailto:camlife73@gmail.com">camlife73@gmail.com</a></p>
+                            <p><i class="fa-brands fa-github" style="color: var(--text-muted);"></i> GitHub: <a href="https://github.com/danlarov" target="_blank">github.com/danlarov</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- НАВИГАЦИЯ ---
+        function showSection(id, element) {
+            document.querySelectorAll('.doc-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // --- ЛОКАЛИЗАЦИЯ ---
+        const translations = {
+            ru: {
+                page_title: "Документация", nav_intro: "О проекте", nav_files: "Структура файлов", nav_req: "Требования", nav_server: "Установка сервера", nav_admin_config: "Настройка админки", nav_flutter: "Настройка приложения", nav_firebase: "Настройка Firebase", nav_build: "Сборка и релиз", nav_trouble: "Решение проблем", nav_support: "Поддержка",
+                intro_title: "О проекте", 
+                intro_desc1: "Добро пожаловать в Flutter Pizza Mart App — премиальное решение для автоматизации ресторанного бизнеса. Проект состоит из мобильного приложения (Flutter) и панели администратора (PHP).", 
+                intro_desc2: "Этот продукт идеально подходит для пиццерий, ресторанов и кафе. Вы получаете красивый интерфейс для клиентов и мощную систему управления контентом без необходимости писать код.",
+                intro_desc3: "Приложение оснащено интуитивно понятной системой бронирования столиков. Как только клиент оставляет заявку, она мгновенно сохраняется в базе данных (Админке), а также отправляется в Telegram или WhatsApp владельца заведения для быстрой обработки.",
+                ph_screen_title: "Скриншоты", 
+                ph_screen_desc: "Размер изображений: 1000x800px. Папка: /documentation/img/screens/", 
+                ph_video_app_title: "Видеопрезентация приложения", 
+                ph_video_app_desc: "Вставьте HTML-тег &lt;video&gt; или &lt;iframe&gt; (YouTube). Видео должно показывать работу клиентского приложения.",
+                ph_video_admin_title: "Видеопрезентация админ-панели", 
+                ph_video_admin_desc: "Вставьте HTML-тег &lt;video&gt; или &lt;iframe&gt; (YouTube). Видео должно показывать, как управлять сайтом из админки.",
+                features_title: "Возможности проекта",
+                feat_1: "<b>Мультиязычность:</b> Встроенная поддержка AZ, RU, EN. Возможность добавлять новые языки и переводить интерфейс прямо из админки.",
+                feat_2: "<b>Темная и светлая темы:</b> Пользователь может переключать дизайн приложения в разделе «Контакты» в один клик.",
+                feat_3: "<b>Бронирование столов:</b> Удобная форма выбора даты и гостей. Заявки падают в Админку, Telegram-бота и WhatsApp.",
+                feat_4: "<b>Push-уведомления:</b> Отправка акций и новостей прямо на телефоны пользователей (с поддержкой картинок) из админки.",
+                feat_5: "<b>Динамическое меню:</b> Категории и блюда с фото, весом, ценой и описанием. Раздел «Все» с новинками.",
+                feat_6: "<b>Новости и Галерея:</b> Красивые карусели на главной странице для демонстрации интерьера и событий ресторана.",
+                author_title: "Автор проекта",
+                
+                files_title: "Структура файлов", files_desc: "Ознакомьтесь со схемой файлов, чтобы понимать, где и что находится.",
+                file_tree_title_1: "1. Серверная часть (все файлы лежат в корне домена)", 
+                file_tree_title_2: "2. Мобильное приложение (Flutter)",
+                file_tree_server: `<span class="folder">📁 api/</span>
+│   ├── 📄 get_config.php         # API: Отдает настройки и переводы
+│   ├── 📄 get_menu.php           # API: Отдает категории и блюда
+│   ├── 📄 get_news.php           # API: Отдает новости
+│   ├── 📄 get_gallery.php        # API: Отдает фото галереи
+│   └── 📄 create_booking.php     # API: Принимает заявки на бронь
+│
+<span class="folder">📁 uploads/</span>                  # Папка для ВСЕХ загруженных картинок (меню, новости, пуши)
+│
+<span class="folder">📁 language/</span>                 # Языковые файлы для САМОЙ АДМИНКИ
+│   ├── 📄 ru.php                 # Русский
+│   ├── 📄 az.php                 # Азербайджанский
+│   └── 📄 en.php                 # Английский
+│
+├── 📄 index.php                  # Страница входа в админку
+├── 📄 dashboard.php              # Главная страница (последние 25 броней и статистика)
+├── 📄 bookings.php               # Полный список всех броней
+├── 📄 categories.php             # Управление категориями меню
+├── 📄 dishes.php                 # Управление блюдами (меню)
+├── 📄 news.php                   # Управление новостями
+├── 📄 gallery.php                # Управление галереей
+├── 📄 notifications.php          # Отправка Push-уведомлений
+├── 📄 settings.php               # Настройки (контакты, Telegram, WhatsApp)
+├── 📄 languages.php              # Управление языками ПРИЛОЖЕНИЯ
+├── 📄 translations.php           # Переводы интерфейса ПРИЛОЖЕНИЯ
+├── 📄 header.php                 # Шапка и навигация админки
+├── 📄 footer.php                 # Подвал админки
+├── 📄 db.php                     # Подключение к базе данных
+├── 📄 config.php                 # ГЛАВНЫЙ КОНФИГ (БД, домен)
+├── 📄 firebase-key.json          # Ключ для Push (вы создаете сами)
+└── 📄 *.sql                      # Дамп базы данных`,
+                file_tree_flutter: `<span class="folder">📁 lib/</span>
+│   ├── <span class="folder">📁 config/</span>
+│   │   └── 📄 app_config.dart    # ГЛАВНЫЙ КОНФИГ ПРИЛОЖЕНИЯ (API, баннер)
+│   │
+│   ├── <span class="folder">📁 screens/</span>
+│   │   ├── 📄 home_screen.dart   # Главная страница
+│   │   ├── 📄 menu_screen.dart   # Меню
+│   │   ├── 📄 booking_screen.dart# Бронирование
+│   │   ├── 📄 news_screen.dart   # Новости
+│   │   ├── 📄 gallery_screen.dart# Галерея
+│   │   ├── 📄 contacts_screen.dart# Контакты и смена темы
+│   │   └── 📄 onboarding_screen.dart# Приветственные экраны
+│   │
+│   ├── <span class="folder">📁 services/</span>
+│   │   ├── 📄 app_service.dart   # Логика (Provider), загрузка API
+│   │   └── 📄 firebase_service.dart # Настройка Push-уведомлений
+│   │
+│   ├── <span class="folder">📁 widgets/</span>
+│   │   └── 📄 language_selector.dart # Кнопка выбора языка
+│   │
+│   └── 📄 main.dart              # Точка входа в приложение
+│
+<span class="folder">📁 assets/</span>
+│   ├── <span class="folder">📁 icon/</span>                  # Иконки приложения (icon.png)
+│   └── <span class="folder">📁 intro/</span>                 # Картинки для онбординга (intro1,2,3.jpg)
+│
+<span class="folder">📁 android/</span>                 # Настройки Android (build.gradle, key.properties, mipmap)`,
+                
+                req_title: "Технические требования", req_alert: "Убедитесь, что ваш хостинг и компьютер соответствуют этим требованиям перед началом установки.", req_server: "Для сервера (Хостинг)", req_flutter: "Для сборки приложения",
+                server_title: "Установка сервера и БД", srv_step1: "Загрузка файлов на хостинг", srv_step1_desc: "Подключитесь к вашему хостингу через FTP (например, FileZilla) или файловый менеджер хостинга (cPanel). Загрузите все файлы проекта в корневую папку вашего домена.", srv_step2: "Создание базы данных", srv_step2_desc: "Зайдите в панель управления хостингом и найдите раздел «Базы данных MySQL». Создайте новую базу данных, а также нового пользователя. Запишите данные.", srv_step3: "Импорт SQL файла", srv_step3_desc: "Откройте phpMyAdmin для созданной базы данных. Перейдите на вкладку «Импорт». Выберите SQL-файл из архива и нажмите «Вперед».", srv_step4: "Настройка config.php", srv_step4_desc: "В корне сайта найдите файл config.php. Впишите данные от вашей базы данных и домен (без слэша на конце):",
+                adm_cfg_title: "Настройка Админки", adm_login: "Первый вход", adm_login_desc: "Откройте в браузере: https://your-domain.com/index.php.<br><b>Login:</b> admin<br><b>Password:</b> 12345678", adm_login_warn: "Сразу после входа нажмите кнопку «Профиль» и смените пароль!",
+                adm_tg: "Настройка Telegram (для получения броней)", adm_tg_desc: "Чтобы бронирования приходили в Telegram:", adm_tg_1: "Найдите бота @BotFather. Напишите /newbot. Получите Token.", adm_tg_2: "Найдите @userinfobot. Напишите /start. Получите Chat ID.", adm_tg_3: "Зайдите в админку -> Настройки. Выберите «Только Telegram». Вставьте Token и Chat ID.",
+                adm_wa: "Настройка WhatsApp", adm_wa_desc: "В админке -> Настройки -> «Каналы получения заказов» выберите «Только WhatsApp». Впишите ваш номер без плюса (например: 994501234567).",
+                adm_bookings: "Управление бронями", adm_bookings_desc: "В разделе «Все брони» вы можете видеть полный список заявок. Галочка подтверждает, стрелка возвращает в новые, корзина удаляет. На Дашборде только 25 последних.",
+                adm_lang: "Как добавить новый язык в приложение", adm_lang_desc: "Зайдите в раздел Языки. Нажмите «Добавить язык», укажите код (например, tr) и название. В разделе «Переводы UI» переведите все тексты.",
+                
+                fl_title: "Настройка приложения (Flutter)", fl_step1: "Открытие проекта", fl_step1_desc: "Запустите Android Studio. Нажмите Open. Выберите папку App из архива. Дождитесь индексации.",
+                fl_step2: "Настройка конфигурации (API)", fl_step2_desc: "Откройте lib/config/app_config.dart. Измените ссылки на ваш домен:",
+                fl_step3: "Смена ID проекта (Application ID)", fl_step3_desc: "По умолчанию проект имеет ID com.example.pizzamart_app. Вы должны поменять его на свой (например, com.myrestaurant.app). Вот подробная инструкция:",
+                fl_step3_1: "Откройте файл android/app/build.gradle.kts.", fl_step3_2: "Найдите строки namespace = \"...\" и applicationId = \"...\". Поменяйте значения на свои.", fl_step3_3: "В левом меню перейдите в android/app/src/main/kotlin/com/.", fl_step3_4: "Нажмите правой кнопкой мыши на папку example, выберите Refactor -> Rename и переименуйте её в myrestaurant.", fl_step3_5: "Затем зайдите в папку myrestaurant. Нажмите правой кнопкой на папку pizzamart_app, выберите Refactor -> Rename и переименуйте в app.", fl_step3_6: "В верхнем меню Android Studio нажмите Edit -> Find -> Replace in Files (или Ctrl+Shift+R).", fl_step3_7: "В верхнее поле введите старый ID, а в нижнее — новый. Нажмите Replace All.", fl_step3_8: "В терминале выполните flutter clean и flutter pub get.",
+                fl_step4: "Настройка иконки приложения", fl_step4_desc: "У вас есть два способа поменять иконку.", fl_step4_1: "Способ 1 (Автоматический, рекомендуемый):", fl_step4_1_desc: "Замените картинку assets/icon/icon.png и выполните flutter pub run flutter_launcher_icons.", fl_step4_2: "Способ 2 (Ручной):", fl_step4_2_desc: "Замените файлы ic_launcher.png в папках mipmap:", fl_step4_ios: "Для iOS замените иконки в ios/Runner/Assets.xcassets/AppIcon.appiconset/.",
+                fl_step5: "Онбординг (Интро)", fl_step5_desc: "Картинки для приветственных экранов лежат в папке assets/intro/. Замените файлы intro1.jpg, intro2.jpg, intro3.jpg на свои.",
+                fl_step6: "Язык по умолчанию", fl_step6_desc: "В админке зайдите в Языки и нажмите «Сделать по умолчанию» напротив нужного языка. Приложение подхватит его.",
+                
+                fb_title: "Настройка Firebase (Push)", fb_alert: "Firebase нужен для отправки Push-уведомлений.", fb_step1: "Создание проекта", fb_1_1: "Зайдите на console.firebase.google.com.", fb_1_2: "Нажмите «Создать проект». Введите название.", fb_1_3: "Отключите Google Analytics и нажмите «Создать».",
+                fb_step2: "Добавление Android-приложения", fb_2_1: "Нажмите иконку Android.", fb_2_2: "В поле «Package name» введите ваш новый ID из build.gradle.kts.", fb_2_3: "Придумайте nickname.", fb_2_4: "Скачайте google-services.json и поместите в android/app/.",
+                fb_step3: "Ключ для Админки (firebase-key.json)", fb_3_desc: "Чтобы админка могла отправлять пуши:", fb_3_1: "В Firebase нажмите шестеренку -> Настройки проекта.", fb_3_2: "Вкладка «Сервисные аккаунты».", fb_3_3: "Нажмите «Создать новый закрытый ключ».", fb_3_4: "Переименуйте в firebase-key.json и загрузите в корень сайта.",
+                
+                build_title: "Сборка и релиз (Android & iOS)", build_android: "Сборка APK для Android", build_android_desc: "Приложение нужно подписать ключом JKS.", build_jks_desc: "Выполните в терминале:", build_jks_desc2: "Придумайте пароль и запишите. Файл появится в корне.", build_kp_desc: "В папке android/ создайте key.properties:", build_compile_desc: "Выполните в терминале:", build_compile_desc2: "Готовый файл будет в build/app/outputs/flutter-apk/app-release.apk.",
+                build_ios: "Сборка для iOS", build_ios_warn: "Нужен Mac и Xcode.", build_ios_1: "Откройте ios/Runner.xcworkspace в Xcode.", build_ios_2: "Выберите iPhone и Team.", build_ios_3: "Добавьте Push Notifications и Background Modes.", build_ios_4: "Соберите через Xcode (Product -> Archive).",
+                
+                tr_title: "Решение частых проблем", tr_1: "Не загружаются картинки", tr_1_desc: "Неправильный путь в API или нет прав.", tr_1_fix: "Проверьте BASE_URL в config.php (без слэша). Поставьте права 755 на папку uploads.", tr_2: "Не приходят Push-уведомления", tr_2_desc: "Ошибка в ключе или эмулятор.", tr_2_fix: "Убедитесь, что firebase-key.json на сервере. ID в Firebase и build.gradle.kts должны совпадать. Используйте эмулятор с Google Play.", tr_3: "Ошибка 500 в админке", tr_3_desc: "Неверные данные БД.", tr_3_fix: "Проверьте config.php.",
+                support_title: "Техническая поддержка", support_desc: "Свяжитесь с автором проекта. Прикрепляйте скриншоты ошибок."
+            },
+            az: {
+                page_title: "Sənədləşmə", nav_intro: "Layihə haqqında", nav_files: "Fayl strukturu", nav_req: "Tələblər", nav_server: "Server quraşdırılması", nav_admin_config: "Admin quraşdırılması", nav_flutter: "Tətbiqin quraşdırılması", nav_firebase: "Firebase quraşdırılması", nav_build: "Yığım və reliz", nav_trouble: "Problemlərin həlli", nav_support: "Dəstək",
+                intro_title: "Layihə haqqında", 
+                intro_desc1: "Flutter Pizza Mart App-ə xoş gəlmisiniz — restoran biznesinin avtomatlaşdırılması üçün premium həll. Layihə mobil tətbiqdən (Flutter) və admin paneldən (PHP) ibarətdir.", 
+                intro_desc2: "Bu məhsul pizzaxanalar, restoranlar və kafelər üçün mükəmməldir. Kod yazmadan gözəl müştəri interfeysi və güclü məzmun idarəetmə sistemi əldə edirsiniz.",
+                intro_desc3: "Tətbiq intuitiv masa rezervasiyası sistemi ilə təchiz edilmişdir. Müştəri müraciət etdikdən sonra o, dərhal verilənlər bazasında (Admin panel) saxlanılır, həmçinin sürətli emal üçün müəssisə sahibinin Telegram və ya WhatsAppına göndərilir.",
+                ph_screen_title: "Skrinşotlar", 
+                ph_screen_desc: "Şəkillərin ölçüsü: 1000x800px. Qovluq: /documentation/img/screens/", 
+                ph_video_app_title: "Tətbiqin video təqdimatı", 
+                ph_video_app_desc: "&lt;video&gt; və ya &lt;iframe&gt; (YouTube) HTML teqini daxil edin. Video müştəri tətbiqinin işini göstərməlidir.",
+                ph_video_admin_title: "Admin panelin video təqdimatı", 
+                ph_video_admin_desc: "&lt;video&gt; və ya &lt;iframe&gt; (YouTube) HTML teqini daxil edin. Video saytın admin paneldən necə idarə olunduğunu göstərməlidir.",
+                features_title: "Layihənin imkanları",
+                feat_1: "<b>Çoxdillilik:</b> AZ, RU, EN dəstəyi. Yeni dillər əlavə etmək və interfeysi birbaşa admin paneldən tərcümə etmək imkanı.",
+                feat_2: "<b>Tünd və işıqlı temalar:</b> İstifadəçi 'Əlaqə' bölməsində bir kliklə tətbiqin dizaynını dəyişə bilər.",
+                feat_3: "<b>Masa rezervasiyası:</b> Tarix və qonaq seçimi üçün rahat forma. Müraciətlər Admin panelə, Telegram bota və WhatsApp-a düşür.",
+                feat_4: "<b>Push bildirişləri:</b> Admin paneldən istifadəçilərin telefonlarına birbaşa aksiyaların və xəbərlərin göndərilməsi (şəkillərlə).",
+                feat_5: "<b>Dinamik menyu:</b> Foto, çəki, qiymət və təsviri olan kateqoriyalar və yeməklər. Yeniliklərlə 'Hamısı' bölməsi.",
+                feat_6: "<b>Xəbərlər və Qalereya:</b> Restoranın interyerini və hadisələrini nümayiş etdirmək üçün ana səhifədə gözəl karusellər.",
+                author_title: "Layihənin müəllifi",
+                
+                files_title: "Fayl strukturu", files_desc: "Fayl sxemi ilə tanış olun.",
+                file_tree_title_1: "1. Server hissəsi (bütün fayllar domenin kökündədir)",
+                file_tree_title_2: "2. Mobil tətbiq (Flutter)",
+                file_tree_server: `<span class="folder">📁 api/</span>
+│   ├── 📄 get_config.php         # API: Parametrləri və tərcümələri verir
+│   ├── 📄 get_menu.php           # API: Kateqoriyaları və yeməkləri verir
+│   ├── 📄 get_news.php           # API: Xəbərləri verir
+│   ├── 📄 get_gallery.php        # API: Qalereya şəkillərini verir
+│   └── 📄 create_booking.php     # API: Rezervasiya müraciətlərini qəbul edir
+│
+<span class="folder">📁 uploads/</span>                  # BÜTÜN yüklənmiş şəkillər üçün qovluq
+│
+<span class="folder">📁 language/</span>                 # ADMIN PANELİN özü üçün dil faylları
+│   ├── 📄 ru.php                 # Rus dili
+│   ├── 📄 az.php                 # Azərbaycan dili
+│   └── 📄 en.php                 # İngilis dili
+│
+├── 📄 index.php                  # Admin panelə giriş səhifəsi
+├── 📄 dashboard.php              # Əsas səhifə (son 25 rezervasiya və statistika)
+├── 📄 bookings.php               # Bütün rezervasiyaların tam siyahısı
+├── 📄 categories.php             # Menyu kateqoriyalarının idarə edilməsi
+├── 📄 dishes.php                 # Yeməklərin idarə edilməsi
+├── 📄 news.php                   # Xəbərlərin idarə edilməsi
+├── 📄 gallery.php                # Qalereyanın idarə edilməsi
+├── 📄 notifications.php          # Push bildirişlərinin göndərilməsi
+├── 📄 settings.php               # Tənzimləmələr
+├── 📄 languages.php              # TƏTBİQİN dillərinin idarə edilməsi
+├── 📄 translations.php           # TƏTBİQİN interfeys tərcümələri
+├── 📄 header.php                 # Admin panelin başlığı
+├── 📄 footer.php                 # Admin panelin altlığı
+├── 📄 db.php                     # Verilənlər bazasına qoşulma
+├── 📄 config.php                 # ƏSAS KONFİQ (DB, domen)
+├── 📄 firebase-key.json          # Push üçün açar
+└── 📄 *.sql                      # Verilənlər bazasının damğı`,
+                file_tree_flutter: `<span class="folder">📁 lib/</span>
+│   ├── <span class="folder">📁 config/</span>
+│   │   └── 📄 app_config.dart    # TƏTBİQİN ƏSAS KONFİQİ
+│   │
+│   ├── <span class="folder">📁 screens/</span>
+│   │   ├── 📄 home_screen.dart   # Əsas səhifə
+│   │   ├── 📄 menu_screen.dart   # Menyu
+│   │   ├── 📄 booking_screen.dart# Rezervasiya
+│   │   ├── 📄 news_screen.dart   # Xəbərlər
+│   │   ├── 📄 gallery_screen.dart# Qalereya
+│   │   ├── 📄 contacts_screen.dart# Əlaqə və tema
+│   │   └── 📄 onboarding_screen.dart# Giriş ekranları
+│   │
+│   ├── <span class="folder">📁 services/</span>
+│   │   ├── 📄 app_service.dart   # Məntiq (Provider)
+│   │   └── 📄 firebase_service.dart # Push quraşdırılması
+│   │
+│   ├── <span class="folder">📁 widgets/</span>
+│   │   └── 📄 language_selector.dart # Dil seçimi
+│   │
+│   └── 📄 main.dart              # Tətbiqə giriş nöqtəsi
+│
+<span class="folder">📁 assets/</span>
+│   ├── <span class="folder">📁 icon/</span>                  # Tətbiq ikonları
+│   └── <span class="folder">📁 intro/</span>                 # Onboarding üçün şəkillər
+│
+<span class="folder">📁 android/</span>                 # Android parametrləri`,
+                
+                req_title: "Texniki tələblər", req_alert: "Hostinqinizin bu tələblərə cavab verdiyinə əmin olun.", req_server: "Server üçün", req_flutter: "Tətbiqi yığmaq üçün",
+                server_title: "Server quraşdırılması", srv_step1: "Faylların yüklənməsi", srv_step1_desc: "FTP vasitəsilə bütün faylları domenin kök qovluğuna yükləyin.", srv_step2: "Verilənlər bazasının yaradılması", srv_step2_desc: "cPanel-də MySQL bazası və istifadəçi yaradın.", srv_step3: "SQL idxalı", srv_step3_desc: "phpMyAdmin-də İdxal bölməsinə keçin və SQL faylını seçin.", srv_step4: "config.php konfiqurasiyası", srv_step4_desc: "config.php faylına bazanın məlumatlarını və domeni yazın:",
+                adm_cfg_title: "Admin quraşdırılması", adm_login: "İlk giriş", adm_login_desc: "index.php linkini açın.<br><b>Login:</b> admin<br><b>Password:</b> 12345678", adm_login_warn: "Dərhal şifrəni dəyişin!",
+                adm_tg: "Telegram quraşdırılması", adm_tg_desc: "Rezervasiyalar üçün:", adm_tg_1: "@BotFather-dən Token alın.", adm_tg_2: "@userinfobot-dan Chat ID alın.", adm_tg_3: "Admin panel -> Tənzimləmələr bölməsinə daxil edin.",
+                adm_wa: "WhatsApp quraşdırılması", adm_wa_desc: "Tənzimləmələrdə nömrəni plus işarəsi olmadan yazın.",
+                adm_bookings: "Rezervasiyaların idarə edilməsi", adm_bookings_desc: "Bütün rezervasiyalar bölməsində tam siyahını görə bilərsiniz. Dashboard-da yalnız son 25-i var.",
+                adm_lang: "Yeni dil necə əlavə edilir", adm_lang_desc: "Dillər bölməsində yeni dil əlavə edin və Tərcümələr bölməsində mətnləri tərcümə edin.",
+                
+                fl_title: "Tətbiqin quraşdırılması", fl_step1: "Layihənin açılması", fl_step1_desc: "Android Studio-da Open düyməsi ilə App qovluğunu açın.",
+                fl_step2: "Konfiqurasiya", fl_step2_desc: "lib/config/app_config.dart faylında linkləri dəyişin:",
+                fl_step3: "Layihə ID-nin dəyişdirilməsi", fl_step3_desc: "Standart ID-ni öz ID-nizlə dəyişməlisiniz. Təlimat:",
+                fl_step3_1: "build.gradle.kts faylını açın.", fl_step3_2: "namespace və applicationId sətirlərini dəyişin.", fl_step3_3: "kotlin/com/ qovluğuna keçin.", fl_step3_4: "example qovluğunu myrestaurant olaraq dəyişin.", fl_step3_5: "pizzamart_app qovluğunu app olaraq dəyişin.", fl_step3_6: "Edit -> Find -> Replace in Files basın.", fl_step3_7: "Köhnə və yeni ID-ni yazıb Replace All basın.", fl_step3_8: "flutter clean və flutter pub get icra edin.",
+                fl_step4: "Tətbiq ikonunun dəyişdirilməsi", fl_step4_desc: "İkonu dəyişməyin iki yolu var.", fl_step4_1: "Metod 1 (Avtomatik):", fl_step4_1_desc: "assets/icon/icon.png şəklini dəyişin və flutter pub run flutter_launcher_icons icra edin.", fl_step4_2: "Metod 2 (Manual):", fl_step4_2_desc: "mipmap qovluqlarındakı ic_launcher.png fayllarını dəyişin:", fl_step4_ios: "iOS üçün AppIcon.appiconset qovluğundakı ikonları dəyişin.",
+                fl_step5: "Onboarding (İntro)", fl_step5_desc: "assets/intro/ qovluğundakı intro1,2,3.jpg fayllarını dəyişin.",
+                fl_step6: "Standart dil", fl_step6_desc: "Admin paneldə Dillər bölməsində 'Standart et' düyməsini basın.",
+                
+                fb_title: "Firebase quraşdırılması", fb_alert: "Push bildirişləri üçün lazımdır.", fb_step1: "Layihənin yaradılması", fb_1_1: "console.firebase.google.com saytına daxil olun.", fb_1_2: "Yeni layihə yaradın.", fb_1_3: "Google Analytics-i söndürün.",
+                fb_step2: "Android tətbiqinin əlavə edilməsi", fb_2_1: "Android ikonuna basın.", fb_2_2: "build.gradle.kts-dəki yeni ID-ni yazın.", fb_2_3: "Nickname yazın.", fb_2_4: "google-services.json faylını endirib android/app/ qovluğuna atın.",
+                fb_step3: "Admin üçün açar (firebase-key.json)", fb_3_desc: "Push göndərmək üçün:", fb_3_1: "Layihə parametrləri -> Xidmət hesabları.", fb_3_2: "Yeni şəxsi açar yaradın.", fb_3_3: "Adını firebase-key.json olaraq dəyişin.", fb_3_4: "Saytın kökünə yükləyin.",
+                
+                build_title: "Yığım və reliz", build_android: "APK yığılması", build_android_desc: "JKS açarı ilə imzalayın.", build_jks_desc: "Terminalda icra edin:", build_jks_desc2: "Şifrəni yadda saxlayın.", build_kp_desc: "android/ qovluğunda key.properties yaradın:", build_compile_desc: "Terminalda icra edin:", build_compile_desc2: "Fayl build/app/outputs/flutter-apk/ qovluğunda olacaq.",
+                build_ios: "iOS üçün yığım", build_ios_warn: "Mac və Xcode lazımdır.", build_ios_1: "Runner.xcworkspace faylını açın.", build_ios_2: "iPhone və Team seçin.", build_ios_3: "Push Notifications əlavə edin.", build_ios_4: "Xcode ilə yığın.",
+                
+                tr_title: "Problemlərin həlli", tr_1: "Şəkillər yüklənmir", tr_1_desc: "API yolu və ya icazələr səhvdir.", tr_1_fix: "config.php-də BASE_URL-i yoxlayın. uploads qovluğuna 755 icazəsi verin.", tr_2: "Push gəlmir", tr_2_desc: "Açar səhvi və ya emulyator.", tr_2_fix: "firebase-key.json faylını yoxlayın. ID-lər uyğun olmalıdır. Google Play olan emulyator istifadə edin.", tr_3: "Admin paneldə Xəta 500", tr_3_desc: "Baza məlumatları səhvdir.", tr_3_fix: "config.php faylını yoxlayın.",
+                support_title: "Texniki dəstək", support_desc: "Layihə müəllifi ilə əlaqə saxlayın. Səhv ekran görüntülərini əlavə edin."
+            },
+            en: {
+                page_title: "Documentation", nav_intro: "About Project", nav_files: "File Structure", nav_req: "Requirements", nav_server: "Server Setup", nav_admin_config: "Admin Setup", nav_flutter: "App Setup", nav_firebase: "Firebase Setup", nav_build: "Build & Release", nav_trouble: "Troubleshooting", nav_support: "Support",
+                intro_title: "About Project", 
+                intro_desc1: "Welcome to Flutter Pizza Mart App — a premium solution for restaurant business automation. The project consists of a mobile app (Flutter) and an admin panel (PHP).", 
+                intro_desc2: "This product is perfect for pizzerias, restaurants, and cafes. You get a beautiful client interface and a powerful content management system without writing code.",
+                intro_desc3: "The app is equipped with an intuitive table booking system. Once a client submits a request, it is instantly saved in the database (Admin Panel) and also sent to the restaurant owner's Telegram or WhatsApp for quick processing.",
+                ph_screen_title: "Screenshots", 
+                ph_screen_desc: "Image size: 1000x800px. Folder: /documentation/img/screens/", 
+                ph_video_app_title: "App Video Presentation", 
+                ph_video_app_desc: "Insert &lt;video&gt; or &lt;iframe&gt; (YouTube) HTML tag. The video should show the client app in action.",
+                ph_video_admin_title: "Admin Panel Video Presentation", 
+                ph_video_admin_desc: "Insert &lt;video&gt; or &lt;iframe&gt; (YouTube) HTML tag. The video should show how to manage the site from the admin panel.",
+                features_title: "Project Features",
+                feat_1: "<b>Multi-language:</b> Built-in support for AZ, RU, EN. Ability to add new languages and translate the interface directly from the admin panel.",
+                feat_2: "<b>Dark & Light themes:</b> Users can switch the app's design in the 'Contacts' section with one click.",
+                feat_3: "<b>Table booking:</b> Convenient form for selecting date and guests. Requests go to the Admin Panel, Telegram bot, and WhatsApp.",
+                feat_4: "<b>Push notifications:</b> Send promotions and news directly to users' phones (with images) from the admin panel.",
+                feat_5: "<b>Dynamic menu:</b> Categories and dishes with photos, weight, price, and description. 'All' section with new items.",
+                feat_6: "<b>News & Gallery:</b> Beautiful carousels on the home page to showcase the restaurant's interior and events.",
+                author_title: "Project Author",
+                
+                files_title: "File Structure", files_desc: "Review the file diagram.",
+                file_tree_title_1: "1. Server side (all files are in the domain root)",
+                file_tree_title_2: "2. Mobile App (Flutter)",
+                file_tree_server: `<span class="folder">📁 api/</span>
+│   ├── 📄 get_config.php         # API: Returns settings and translations
+│   ├── 📄 get_menu.php           # API: Returns categories and dishes
+│   ├── 📄 get_news.php           # API: Returns news
+│   ├── 📄 get_gallery.php        # API: Returns gallery photos
+│   └── 📄 create_booking.php     # API: Receives booking requests
+│
+<span class="folder">📁 uploads/</span>                  # Folder for ALL uploaded images
+│
+<span class="folder">📁 language/</span>                 # Language files for the ADMIN PANEL itself
+│   ├── 📄 ru.php                 # Russian
+│   ├── 📄 az.php                 # Azerbaijani
+│   └── 📄 en.php                 # English
+│
+├── 📄 index.php                  # Admin login page
+├── 📄 dashboard.php              # Main page (last 25 bookings & stats)
+├── 📄 bookings.php               # Full list of all bookings
+├── 📄 categories.php             # Menu categories management
+├── 📄 dishes.php                 # Dishes management
+├── 📄 news.php                   # News management
+├── 📄 gallery.php                # Gallery management
+├── 📄 notifications.php          # Sending Push notifications
+├── 📄 settings.php               # Settings (contacts, channels)
+├── 📄 languages.php              # APP languages management
+├── 📄 translations.php           # APP interface translations
+├── 📄 header.php                 # Admin header and navigation
+├── 📄 footer.php                 # Admin footer
+├── 📄 db.php                     # Database connection
+├── 📄 config.php                 # MAIN CONFIG (DB, domain)
+├── 📄 firebase-key.json          # Key for Push (you create it yourself)
+└── 📄 *.sql                      # Database dump`,
+                file_tree_flutter: `<span class="folder">📁 lib/</span>
+│   ├── <span class="folder">📁 config/</span>
+│   │   └── 📄 app_config.dart    # MAIN APP CONFIG (API, banner)
+│   │
+│   ├── <span class="folder">📁 screens/</span>
+│   │   ├── 📄 home_screen.dart   # Home page
+│   │   ├── 📄 menu_screen.dart   # Menu
+│   │   ├── 📄 booking_screen.dart# Booking
+│   │   ├── 📄 news_screen.dart   # News
+│   │   ├── 📄 gallery_screen.dart# Gallery
+│   │   ├── 📄 contacts_screen.dart# Contacts and theme switch
+│   │   └── 📄 onboarding_screen.dart# Welcome screens
+│   │
+│   ├── <span class="folder">📁 services/</span>
+│   │   ├── 📄 app_service.dart   # Logic (Provider), API loading
+│   │   └── 📄 firebase_service.dart # Push notifications setup
+│   │
+│   ├── <span class="folder">📁 widgets/</span>
+│   │   └── 📄 language_selector.dart # Language selection button
+│   │
+│   └── 📄 main.dart              # App entry point
+│
+<span class="folder">📁 assets/</span>
+│   ├── <span class="folder">📁 icon/</span>                  # App icons (icon.png)
+│   └── <span class="folder">📁 intro/</span>                 # Onboarding images (intro1,2,3.jpg)
+│
+<span class="folder">📁 android/</span>                 # Android settings (build.gradle, key.properties, mipmap)`,
+                
+                req_title: "Technical Requirements", req_alert: "Ensure your hosting meets these requirements.", req_server: "For Server", req_flutter: "For App Building",
+                server_title: "Server Setup", srv_step1: "Uploading files", srv_step1_desc: "Upload all files to the domain root via FTP.", srv_step2: "Database creation", srv_step2_desc: "Create a MySQL database in cPanel.", srv_step3: "SQL Import", srv_step3_desc: "Open phpMyAdmin and Import the SQL file.", srv_step4: "config.php", srv_step4_desc: "Enter your database details and domain:",
+                adm_cfg_title: "Admin Setup", adm_login: "First Login", adm_login_desc: "Open index.php.<br><b>Login:</b> admin<br><b>Password:</b> 12345678", adm_login_warn: "Change the password immediately!",
+                adm_tg: "Telegram Setup", adm_tg_desc: "For bookings:", adm_tg_1: "Get Token from @BotFather.", adm_tg_2: "Get Chat ID from @userinfobot.", adm_tg_3: "Enter them in Admin -> Settings.",
+                adm_wa: "WhatsApp Setup", adm_wa_desc: "In Settings, enter your number without a plus (e.g., 994501234567).",
+                adm_bookings: "Bookings Management", adm_bookings_desc: "In 'All Bookings' you can see the full list. Checkmark confirms, arrow returns to new, trash deletes. Dashboard shows only the last 25.",
+                adm_lang: "How to add a new language", adm_lang_desc: "Go to Languages, add a new language, then translate UI Translations.",
+                
+                fl_title: "App Setup", fl_step1: "Opening Project", fl_step1_desc: "Open App folder in Android Studio.",
+                fl_step2: "Configuration", fl_step2_desc: "Change links in lib/config/app_config.dart:",
+                fl_step3: "Change Project ID (Application ID)", fl_step3_desc: "By default, the ID is com.example.pizzamart_app. You MUST change it to your own (e.g., com.myrestaurant.app). Here is the guide:",
+                fl_step3_1: "Open android/app/build.gradle.kts.", fl_step3_2: "Find namespace and applicationId. Change to your own.", fl_step3_3: "Go to kotlin/com/.", fl_step3_4: "Rename 'example' to 'myrestaurant' (Refactor -> Rename).", fl_step3_5: "Rename 'pizzamart_app' to 'app'.", fl_step3_6: "Press Ctrl+Shift+R (Replace in Files).", fl_step3_7: "Enter old ID and new ID. Click Replace All.", fl_step3_8: "Run flutter clean and flutter pub get.",
+                fl_step4: "App Icon Setup", fl_step4_desc: "Two ways to change the icon.", fl_step4_1: "Method 1 (Automatic):", fl_step4_1_desc: "Replace assets/icon/icon.png and run flutter pub run flutter_launcher_icons.", fl_step4_2: "Method 2 (Manual):", fl_step4_2_desc: "Replace ic_launcher.png in mipmap folders:", fl_step4_ios: "For iOS, replace icons in AppIcon.appiconset/.",
+                fl_step5: "Onboarding", fl_step5_desc: "Replace intro1,2,3.jpg in assets/intro/.",
+                fl_step6: "Default Language", fl_step6_desc: "In Admin -> Languages, click 'Set as Default'.",
+                
+                fb_title: "Firebase Setup", fb_alert: "Required for Push Notifications.", fb_step1: "Create Project", fb_1_1: "Go to console.firebase.google.com.", fb_1_2: "Create a new project.", fb_1_3: "Disable Analytics.",
+                fb_step2: "Add Android App", fb_2_1: "Click Android icon.", fb_2_2: "Enter YOUR NEW Package name from build.gradle.kts.", fb_2_3: "Enter nickname.", fb_2_4: "Download google-services.json and place in android/app/.",
+                fb_step3: "Admin Key (firebase-key.json)", fb_3_desc: "To send pushes:", fb_3_1: "Project settings -> Service accounts.", fb_3_2: "Generate new private key.", fb_3_3: "Rename to firebase-key.json.", fb_3_4: "Upload to site root.",
+                
+                build_title: "Build & Release", build_android: "Build APK", build_android_desc: "Sign with JKS key.", build_jks_desc: "Run in terminal:", build_jks_desc2: "Remember the password.", build_kp_desc: "Create key.properties in android/:", build_compile_desc: "Run in terminal:", build_compile_desc2: "File will be in build/app/outputs/flutter-apk/.",
+                build_ios: "Build for iOS", build_ios_warn: "Requires Mac and Xcode.", build_ios_1: "Open Runner.xcworkspace.", build_ios_2: "Select iPhone and Team.", build_ios_3: "Add Push Notifications.", build_ios_4: "Build via Xcode.",
+                
+                tr_title: "Troubleshooting", tr_1: "Images not loading", tr_1_desc: "Wrong API path or permissions.", tr_1_fix: "Check BASE_URL in config.php. Set 755 permissions on uploads.", tr_2: "Push not arriving", tr_2_desc: "Key error or emulator.", tr_2_fix: "Check firebase-key.json. IDs must match. Use emulator with Google Play.", tr_3: "Error 500 in Admin", tr_3_desc: "Wrong DB credentials.", tr_3_fix: "Check config.php.",
+                support_title: "Support", support_desc: "Contact the project author. Attach error screenshots."
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if (translations[lang] && translations[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translations[lang][key];
+                    } else {
+                        el.innerHTML = translations[lang][key];
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
