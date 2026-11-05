@@ -124,27 +124,15 @@
                     <p data-lang="intro_desc3">Приложение оснащено интуитивно понятной системой бронирования столиков. Как только клиент оставляет заявку, она мгновенно сохраняется в базе данных (Админке), а также отправляется в Telegram или WhatsApp владельца заведения для быстрой обработки.</p>
                     
                     <div style="text-align: center; margin: 20px 0;">
-    <img src="img/screen1.jpg" alt="App Screenshot" style="max-width: 100%; height: auto; border: none; box-shadow: none; display: block; margin: 0 auto;">
-</div>
+                        <img src="img/screen1.jpg" alt="App Screenshot" style="max-width: 100%; height: auto; border: none; box-shadow: none; display: block; margin: 0 auto;">
+                    </div>
 
                     <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: 20px; border-radius: 12px; background: #000;">
-    <iframe 
-        src="https://www.youtube-nocookie.com/embed/O2NLbibi1Vo?rel=0" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen 
-        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-    </iframe>
-</div>
+                        <iframe src="https://www.youtube-nocookie.com/embed/O2NLbibi1Vo?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                    </div>
                     <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: 20px; border-radius: 12px; background: #000;">
-    <iframe 
-        src="https://www.youtube-nocookie.com/embed/YuTT_jQqOHo?rel=0" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen 
-        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-    </iframe>
-</div>
+                        <iframe src="https://www.youtube-nocookie.com/embed/YuTT_jQqOHo?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -181,66 +169,66 @@
                     <h4 data-lang="file_tree_title_1">1. Серверная часть (все файлы лежат в корне домена)</h4>
                     <div class="file-tree" data-lang="file_tree_server">
 <span class="folder">📁 api/</span>
-│   ├── 📄 get_config.php         # API: Отдает настройки и переводы
-│   ├── 📄 get_menu.php           # API: Отдает категории и блюда
-│   ├── 📄 get_news.php           # API: Отдает новости
-│   ├── 📄 get_gallery.php        # API: Отдает фото галереи
-│   └── 📄 create_booking.php     # API: Принимает заявки на бронь
+│   ├── 📄 get_config.php         # API: Returns settings and translations
+│   ├── 📄 get_menu.php           # API: Returns categories and dishes
+│   ├── 📄 get_news.php           # API: Returns news
+│   ├── 📄 get_gallery.php        # API: Returns gallery photos
+│   └── 📄 create_booking.php     # API: Receives booking requests
 │
-<span class="folder">📁 uploads/</span>                  # Папка для ВСЕХ загруженных картинок (меню, новости, пуши)
+<span class="folder">📁 uploads/</span>                  # Folder for ALL uploaded images (menu, news, push)
 │
-<span class="folder">📁 language/</span>                 # Языковые файлы для САМОЙ АДМИНКИ
-│   ├── 📄 ru.php                 # Русский
-│   ├── 📄 az.php                 # Азербайджанский
-│   └── 📄 en.php                 # Английский
+<span class="folder">📁 language/</span>                 # Language files for the ADMIN PANEL itself
+│   ├── 📄 ru.php                 # Russian
+│   ├── 📄 az.php                 # Azerbaijani
+│   └── 📄 en.php                 # English
 │
-├── 📄 index.php                  # Страница входа в админку
-├── 📄 dashboard.php              # Главная страница (последние 25 броней и статистика)
-├── 📄 bookings.php               # Полный список всех броней
-├── 📄 categories.php             # Управление категориями меню
-├── 📄 dishes.php                 # Управление блюдами (меню)
-├── 📄 news.php                   # Управление новостями
-├── 📄 gallery.php                # Управление галереей
-├── 📄 notifications.php          # Отправка Push-уведомлений
-├── 📄 settings.php               # Настройки (контакты, Telegram, WhatsApp)
-├── 📄 languages.php              # Управление языками ПРИЛОЖЕНИЯ
-├── 📄 translations.php           # Переводы интерфейса ПРИЛОЖЕНИЯ
-├── 📄 header.php                 # Шапка и навигация админки
-├── 📄 footer.php                 # Подвал админки
-├── 📄 db.php                     # Подключение к базе данных
-├── 📄 config.php                 # ГЛАВНЫЙ КОНФИГ (БД, домен)
-├── 📄 firebase-key.json          # Ключ для Push (вы создаете сами)
-└── 📄 *.sql                      # Дамп базы данных</div>
+├── 📄 index.php                  # Admin login page
+├── 📄 dashboard.php              # Main page (last 25 bookings & stats)
+├── 📄 bookings.php               # Full list of all bookings
+├── 📄 categories.php             # Menu categories management
+├── 📄 dishes.php                 # Dishes management
+├── 📄 news.php                   # News management
+├── 📄 gallery.php                # Gallery management
+├── 📄 notifications.php          # Sending Push notifications
+├── 📄 settings.php               # Settings (contacts, channels)
+├── 📄 languages.php              # APP languages management
+├── 📄 translations.php           # APP interface translations
+├── 📄 header.php                 # Admin header and navigation
+├── 📄 footer.php                 # Admin footer
+├── 📄 db.php                     # Database connection
+├── 📄 config.php                 # MAIN CONFIG (DB, domain)
+├── 📄 firebase-key.json          # Key for Push (you create it yourself)
+└── 📄 *.sql                      # Database dump</div>
 
                     <h4 style="margin-top: 30px;" data-lang="file_tree_title_2">2. Мобильное приложение (Flutter)</h4>
                     <div class="file-tree" data-lang="file_tree_flutter">
 <span class="folder">📁 lib/</span>
 │   ├── <span class="folder">📁 config/</span>
-│   │   └── 📄 app_config.dart    # ГЛАВНЫЙ КОНФИГ ПРИЛОЖЕНИЯ (API, баннер)
+│   │   └── 📄 app_config.dart    # MAIN APP CONFIG (API, banner)
 │   │
 │   ├── <span class="folder">📁 screens/</span>
-│   │   ├── 📄 home_screen.dart   # Главная страница
-│   │   ├── 📄 menu_screen.dart   # Меню
-│   │   ├── 📄 booking_screen.dart# Бронирование
-│   │   ├── 📄 news_screen.dart   # Новости
-│   │   ├── 📄 gallery_screen.dart# Галерея
-│   │   ├── 📄 contacts_screen.dart# Контакты и смена темы
-│   │   └── 📄 onboarding_screen.dart# Приветственные экраны
+│   │   ├── 📄 home_screen.dart   # Home page
+│   │   ├── 📄 menu_screen.dart   # Menu
+│   │   ├── 📄 booking_screen.dart# Booking
+│   │   ├── 📄 news_screen.dart   # News
+│   │   ├── 📄 gallery_screen.dart# Gallery
+│   │   ├── 📄 contacts_screen.dart# Contacts and theme switch
+│   │   └── 📄 onboarding_screen.dart# Welcome screens
 │   │
 │   ├── <span class="folder">📁 services/</span>
-│   │   ├── 📄 app_service.dart   # Логика (Provider), загрузка API
-│   │   └── 📄 firebase_service.dart # Настройка Push-уведомлений
+│   │   ├── 📄 app_service.dart   # Logic (Provider), API loading
+│   │   └── 📄 firebase_service.dart # Push notifications setup
 │   │
 │   ├── <span class="folder">📁 widgets/</span>
-│   │   └── 📄 language_selector.dart # Кнопка выбора языка
+│   │   └── 📄 language_selector.dart # Language selection button
 │   │
-│   └── 📄 main.dart              # Точка входа в приложение
+│   └── 📄 main.dart              # App entry point
 │
 <span class="folder">📁 assets/</span>
-│   ├── <span class="folder">📁 icon/</span>                  # Иконки приложения (icon.png)
-│   └── <span class="folder">📁 intro/</span>                 # Картинки для онбординга (intro1,2,3.jpg)
+│   ├── <span class="folder">📁 icon/</span>                  # App icons (icon.png)
+│   └── <span class="folder">📁 intro/</span>                 # Onboarding images (intro1,2,3.jpg)
 │
-<span class="folder">📁 android/</span>                 # Настройки Android (build.gradle, key.properties, mipmap)</div>
+<span class="folder">📁 android/</span>                 # Android settings (build.gradle, key.properties, mipmap)</div>
                 </div>
             </div>
 
@@ -319,8 +307,32 @@ define('BASE_URL', 'https://your-domain.com/folder');</div>
                 <h3><i class="fa-solid fa-calendar-days"></i> <span data-lang="adm_bookings">Управление бронями</span></h3>
                 <p data-lang="adm_bookings_desc">В разделе <b>«Все брони»</b> вы можете видеть полный список заявок. Кнопка с галочкой подтверждает бронь (статус меняется на «Обработана»), кнопка со стрелкой возвращает в «Новые», а корзина удаляет запись. На главной странице (Дашборд) отображаются только 25 последних заявок для быстрого доступа.</p>
 
-                <h3><i class="fa-solid fa-language"></i> <span data-lang="adm_lang">Как добавить новый язык в приложение</span></h3>
-                <p data-lang="adm_lang_desc">Зайдите в раздел <b>Языки</b>. Нажмите «Добавить язык», укажите код (например, <code>tr</code> для турецкого) и название (Türkçe). После этого в разделе <b>Переводы UI</b> вы сможете перевести все тексты приложения (кнопки, меню, ошибки) на этот язык.</p>
+                <!-- EXTENDED LANGUAGE SETUP SECTION -->
+                <h3><i class="fa-solid fa-language"></i> <span data-lang="lang_guide_title">How to Add a New Language</span></h3>
+                
+                <div class="card" style="background: #F8FAFC;">
+                    <h4 data-lang="lang_app_title">1. Adding a Language to the Mobile App (Data & UI)</h4>
+                    <p data-lang="lang_app_step1">To let users switch the app to a new language (e.g., Turkish, German), follow these steps in the Admin Panel:</p>
+                    <ol>
+                        <li data-lang="lang_app_step2">Go to the <b>Languages</b> section. Click <b>Add Language</b> and enter the language code (e.g., <code>tr</code> for Turkish, <code>de</code> for German) and the name (e.g., Türkçe, Deutsch). Save it.</li>
+                        <li data-lang="lang_app_step3">Go to the <b>UI Translations</b> section. You will see a new column for your newly added language. Translate all the interface texts (buttons, navigation, error messages).</li>
+                        <li data-lang="lang_app_step4">Go to <b>Categories</b> and <b>Menu (Dishes)</b>. When editing or adding items, you will see a new language tab. Fill in the translated names and descriptions.</li>
+                        <li data-lang="lang_app_step5">(Optional) If you want the app to open in this language by default for first-time users, go to <b>Languages</b> and click <b>Set as Default</b> next to your new language.</li>
+                    </ol>
+                </div>
+
+                <div class="card" style="background: #F8FAFC; margin-top: 15px;">
+                    <h4 data-lang="lang_admin_title">2. Translating the Admin Panel Interface</h4>
+                    <p data-lang="lang_admin_desc">If you want the Admin Panel website itself to be translated into your new language, follow these steps:</p>
+                    <ol>
+                        <li data-lang="lang_admin_step1">Connect to your server via FTP or your hosting's File Manager.</li>
+                        <li data-lang="lang_admin_step2">Navigate to the <code>language/</code> folder.</li>
+                        <li data-lang="lang_admin_step3">Copy the <code>en.php</code> file and rename the copy to your language code (e.g., <code>tr.php</code>).</li>
+                        <li data-lang="lang_admin_step4">Open <code>tr.php</code> in a text editor. Translate all the text values (inside the quotes), but <b>do not change</b> the keys on the left side of the arrows.</li>
+                        <li data-lang="lang_admin_step5">Log into the Admin Panel and select your new language from the dropdown menu in the top right corner.</li>
+                    </ol>
+                </div>
+
             </div>
 
             <!-- 6. FLUTTER SETUP -->
@@ -483,7 +495,7 @@ flutter build apk --release</div>
     </div>
 
     <script>
-        // --- НАВИГАЦИЯ ---
+        // --- NAVIGATION ---
         function showSection(id, element) {
             document.querySelectorAll('.doc-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
@@ -491,7 +503,7 @@ flutter build apk --release</div>
             element.classList.add('active');
         }
 
-        // --- ЛОКАЛИЗАЦИЯ ---
+        // --- LOCALIZATION ---
         const translations = {
             ru: {
                 page_title: "Документация", nav_intro: "О проекте", nav_files: "Структура файлов", nav_req: "Требования", nav_server: "Установка сервера", nav_admin_config: "Настройка админки", nav_flutter: "Настройка приложения", nav_firebase: "Настройка Firebase", nav_build: "Сборка и релиз", nav_trouble: "Решение проблем", nav_support: "Поддержка",
@@ -582,8 +594,22 @@ flutter build apk --release</div>
                 adm_tg: "Настройка Telegram (для получения броней)", adm_tg_desc: "Чтобы бронирования приходили в Telegram:", adm_tg_1: "Найдите бота @BotFather. Напишите /newbot. Получите Token.", adm_tg_2: "Найдите @userinfobot. Напишите /start. Получите Chat ID.", adm_tg_3: "Зайдите в админку -> Настройки. Выберите «Только Telegram». Вставьте Token и Chat ID.",
                 adm_wa: "Настройка WhatsApp", adm_wa_desc: "В админке -> Настройки -> «Каналы получения заказов» выберите «Только WhatsApp». Впишите ваш номер без плюса (например: 994501234567).",
                 adm_bookings: "Управление бронями", adm_bookings_desc: "В разделе «Все брони» вы можете видеть полный список заявок. Галочка подтверждает, стрелка возвращает в новые, корзина удаляет. На Дашборде только 25 последних.",
-                adm_lang: "Как добавить новый язык в приложение", adm_lang_desc: "Зайдите в раздел Языки. Нажмите «Добавить язык», укажите код (например, tr) и название. В разделе «Переводы UI» переведите все тексты.",
                 
+                lang_guide_title: "Как добавить новый язык",
+                lang_app_title: "1. Добавление языка в мобильное приложение (Контент и Интерфейс)",
+                lang_app_step1: "Чтобы пользователи могли переключить приложение на новый язык (например, турецкий или немецкий), выполните следующие шаги в админке:",
+                lang_app_step2: "Зайдите в раздел <b>Языки</b>. Нажмите <b>Добавить язык</b> и введите код (например, <code>tr</code> для турецкого, <code>de</code> для немецкого) и название (например, Türkçe, Deutsch). Сохраните.",
+                lang_app_step3: "Перейдите в раздел <b>Переводы UI</b>. Вы увидите новую колонку для добавленного языка. Переведите все тексты интерфейса (кнопки, навигацию, сообщения об ошибках).",
+                lang_app_step4: "Зайдите в разделы <b>Категории</b> и <b>Меню (Блюда)</b>. При редактировании или добавлении элементов появится новая вкладка для ввода перевода названий и описаний.",
+                lang_app_step5: "(Необязательно) Если вы хотите, чтобы приложение открывалось на этом языке по умолчанию, зайдите в <b>Языки</b> и нажмите <b>Сделать по умолчанию</b> напротив нового языка.",
+                lang_admin_title: "2. Перевод интерфейса самой Админ-панели",
+                lang_admin_desc: "Если вы хотите, чтобы сам сайт админки перевелся на новый язык, выполните следующие шаги:",
+                lang_admin_step1: "Подключитесь к серверу через FTP или файловый менеджер хостинга.",
+                lang_admin_step2: "Перейдите в папку <code>language/</code>.",
+                lang_admin_step3: "Скопируйте файл <code>en.php</code> и переименуйте копию в код вашего языка (например, <code>tr.php</code>).",
+                lang_admin_step4: "Откройте <code>tr.php</code> в текстовом редакторе. Переведите все значения (текст в кавычках), но <b>не меняйте</b> ключи слева от стрелок.",
+                lang_admin_step5: "Войдите в админку и выберите новый язык из выпадающего списка в правом верхнем углу.",
+
                 fl_title: "Настройка приложения (Flutter)", fl_step1: "Открытие проекта", fl_step1_desc: "Запустите Android Studio. Нажмите Open. Выберите папку App из архива. Дождитесь индексации.",
                 fl_step2: "Настройка конфигурации (API)", fl_step2_desc: "Откройте lib/config/app_config.dart. Измените ссылки на ваш домен:",
                 fl_step3: "Смена ID проекта (Application ID)", fl_step3_desc: "По умолчанию проект имеет ID com.example.pizzamart_app. Вы должны поменять его на свой (например, com.myrestaurant.app). Вот подробная инструкция:",
@@ -691,7 +717,21 @@ flutter build apk --release</div>
                 adm_tg: "Telegram quraşdırılması", adm_tg_desc: "Rezervasiyalar üçün:", adm_tg_1: "@BotFather-dən Token alın.", adm_tg_2: "@userinfobot-dan Chat ID alın.", adm_tg_3: "Admin panel -> Tənzimləmələr bölməsinə daxil edin.",
                 adm_wa: "WhatsApp quraşdırılması", adm_wa_desc: "Tənzimləmələrdə nömrəni plus işarəsi olmadan yazın.",
                 adm_bookings: "Rezervasiyaların idarə edilməsi", adm_bookings_desc: "Bütün rezervasiyalar bölməsində tam siyahını görə bilərsiniz. Dashboard-da yalnız son 25-i var.",
-                adm_lang: "Yeni dil necə əlavə edilir", adm_lang_desc: "Dillər bölməsində yeni dil əlavə edin və Tərcümələr bölməsində mətnləri tərcümə edin.",
+                
+                lang_guide_title: "Yeni dil necə əlavə edilir",
+                lang_app_title: "1. Mobil tətbiqə yeni dil əlavə edilməsi (Məzmun və İnterfeys)",
+                lang_app_step1: "İstifadəçilərin tətbiqi yeni dilə (məsələn, türk və ya alman dilinə) keçirməsini təmin etmək üçün admin paneldə aşağıdakı addımları izləyin:",
+                lang_app_step2: "<b>Dillər</b> bölməsinə keçin. <b>Dil əlavə et</b> düyməsini basın və kod (məsələn, türk dili üçün <code>tr</code>, alman dili üçün <code>de</code>) və ad (məsələn, Türkçe, Deutsch) daxil edin. Yadda saxlayın.",
+                lang_app_step3: "<b>İnterfeys tərcümələri</b> bölməsinə keçin. Yeni əlavə etdiyiniz dil üçün yeni sütun görəcəksiniz. Bütün interfeys mətnlərini (düymələr, naviqasiya, səhv mesajları) tərcümə edin.",
+                lang_app_step4: "<b>Kateqoriyalar</b> və <b>Menyu (Yeməklər)</b> bölmələrinə keçin. Elementləri redaktə edərkən və ya əlavə edərkən, tərcümə edilmiş adları və təsvirləri daxil etmək üçün yeni dil sekmesini görəcəksiniz.",
+                lang_app_step5: "(İstəyə bağlı) Tətbiqin ilk dəfə açılarkən bu dildə açılmasını istəyirsinizsə, <b>Dillər</b> bölməsinə keçin və yeni dilin qarşısındakı <b>Standart et</b> düyməsini basın.",
+                lang_admin_title: "2. Admin Panel interfeysinin tərcümə edilməsi",
+                lang_admin_desc: "Admin Panel saytının özünün yeni dilə tərcümə olunmasını istəyirsinizsə, bu addımları izləyin:",
+                lang_admin_step1: "FTP və ya hostinqin Fayl Meneceri vasitəsilə serverə qoşulun.",
+                lang_admin_step2: "<code>language/</code> qovluğuna keçin.",
+                lang_admin_step3: "<code>en.php</code> faylını kopyalayın və kopyanın adını dil kodunuzla dəyişin (məsələn, <code>tr.php</code>).",
+                lang_admin_step4: "<code>tr.php</code> faylını mətn redaktorunda açın. Bütün mətn dəyərlərini (dırnaq içindəki mətn) tərcümə edin, lakin oxların sol tərəfindəki açarları <b>dəyişdirməyin</b>.",
+                lang_admin_step5: "Admin panelə daxil olun və yuxarı sağ küncdəki açılan menyudan yeni dilinizi seçin.",
                 
                 fl_title: "Tətbiqin quraşdırılması", fl_step1: "Layihənin açılması", fl_step1_desc: "Android Studio-da Open düyməsi ilə App qovluğunu açın.",
                 fl_step2: "Konfiqurasiya", fl_step2_desc: "lib/config/app_config.dart faylında linkləri dəyişin:",
@@ -800,8 +840,22 @@ flutter build apk --release</div>
                 adm_tg: "Telegram Setup", adm_tg_desc: "For bookings:", adm_tg_1: "Get Token from @BotFather.", adm_tg_2: "Get Chat ID from @userinfobot.", adm_tg_3: "Enter them in Admin -> Settings.",
                 adm_wa: "WhatsApp Setup", adm_wa_desc: "In Settings, enter your number without a plus (e.g., 994501234567).",
                 adm_bookings: "Bookings Management", adm_bookings_desc: "In 'All Bookings' you can see the full list. Checkmark confirms, arrow returns to new, trash deletes. Dashboard shows only the last 25.",
-                adm_lang: "How to add a new language", adm_lang_desc: "Go to Languages, add a new language, then translate UI Translations.",
                 
+                lang_guide_title: "How to Add a New Language",
+                lang_app_title: "1. Adding a Language to the Mobile App (Data & UI)",
+                lang_app_step1: "To let users switch the app to a new language (e.g., Turkish, German), follow these steps in the Admin Panel:",
+                lang_app_step2: "Go to the <b>Languages</b> section. Click <b>Add Language</b> and enter the language code (e.g., <code>tr</code> for Turkish, <code>de</code> for German) and the name (e.g., Türkçe, Deutsch). Save it.",
+                lang_app_step3: "Go to the <b>UI Translations</b> section. You will see a new column for your newly added language. Translate all the interface texts (buttons, navigation, error messages).",
+                lang_app_step4: "Go to <b>Categories</b> and <b>Menu (Dishes)</b>. When editing or adding items, you will see a new language tab. Fill in the translated names and descriptions.",
+                lang_app_step5: "(Optional) If you want the app to open in this language by default for first-time users, go to <b>Languages</b> and click <b>Set as Default</b> next to your new language.",
+                lang_admin_title: "2. Translating the Admin Panel Interface",
+                lang_admin_desc: "If you want the Admin Panel website itself to be translated into your new language, follow these steps:",
+                lang_admin_step1: "Connect to your server via FTP or your hosting's File Manager.",
+                lang_admin_step2: "Navigate to the <code>language/</code> folder.",
+                lang_admin_step3: "Copy the <code>en.php</code> file and rename the copy to your language code (e.g., <code>tr.php</code>).",
+                lang_admin_step4: "Open <code>tr.php</code> in a text editor. Translate all the text values (inside the quotes), but <b>do not change</b> the keys on the left side of the arrows.",
+                lang_admin_step5: "Log into the Admin Panel and select your new language from the dropdown menu in the top right corner.",
+
                 fl_title: "App Setup", fl_step1: "Opening Project", fl_step1_desc: "Open App folder in Android Studio.",
                 fl_step2: "Configuration", fl_step2_desc: "Change links in lib/config/app_config.dart:",
                 fl_step3: "Change Project ID (Application ID)", fl_step3_desc: "By default, the ID is com.example.pizzamart_app. You MUST change it to your own (e.g., com.myrestaurant.app). Here is the guide:",
@@ -835,7 +889,7 @@ flutter build apk --release</div>
             });
         }
 
-                // Автоматически включаем английский язык при загрузке страницы
+        // Automatically load English on page load
         window.addEventListener('DOMContentLoaded', (event) => {
             changeLanguage('en');
         });
