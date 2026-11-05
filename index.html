@@ -834,6 +834,11 @@ flutter build apk --release</div>
                 }
             });
         }
+
+                // Автоматически включаем английский язык при загрузке страницы
+        window.addEventListener('DOMContentLoaded', (event) => {
+            changeLanguage('en');
+        });
     </script>
 </body>
 </html>
